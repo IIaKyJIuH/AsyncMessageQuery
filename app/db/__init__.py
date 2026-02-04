@@ -1,2 +1,2 @@
 from .base import init_db
-from .session import get_session
+from .session import AsyncSessionLocal, get_session
