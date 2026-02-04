@@ -25,12 +25,10 @@ class BrokerBase(ABC):
     async def consume(self, handler: MessageHandler) -> None:
         raise NotImplementedError(...)
 
-    @abstractmethod
     async def __aenter__(self) -> Self:
         await self.connect()
         return self
 
-    @abstractmethod
     async def __aexit__(
         self,
         exc_type: type[BaseException] | None,
