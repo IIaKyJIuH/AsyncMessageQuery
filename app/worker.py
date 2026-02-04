@@ -28,6 +28,8 @@ async def handle_message(message: aio_pika.message.AbstractIncomingMessage) -> N
 
             try:
                 await asyncio.sleep(random.uniform(2, 5))
+                if random.random() > 0.7:
+                    raise ValueError("Random failure simulation")
                 task.result = f"Processed payload: {task.payload}"
                 task.status = TaskStatus.DONE
             except Exception as exc:
