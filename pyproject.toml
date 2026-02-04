@@ -4,4 +4,9 @@ version = "0.1.0"
 description = "Принимает задачи от пользователей и обрабатывает их асинхронно через очередь сообщений"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "aio-pika>=9.5.8",
+    "fastapi>=0.128.0",
+    "rabbitmq>=0.2.0",
+    "sqlalchemy>=2.0.46",
+]
