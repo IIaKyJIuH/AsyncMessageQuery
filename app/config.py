@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     rabbit_url: str = "amqp://guest:guest@rabbitmq/"
     queue_name: str = "tasks_queue"
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=".env.local")
 
 
 @lru_cache

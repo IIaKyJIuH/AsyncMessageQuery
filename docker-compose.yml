@@ -4,10 +4,8 @@ services:
     container_name: bobr_task_api
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
     restart: unless-stopped
-    environment:
-      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/postgres
-      RABBIT_URL: amqp://guest:guest@rabbitmq/
-      QUEUE_NAME: tasks_queue
+    env_file:
+      - .env.docker
     ports:
       - "8000:8000"
     depends_on:
@@ -31,10 +29,8 @@ services:
     container_name: bobr_task_worker
     command: ["python", "-m", "app.worker"]
     restart: unless-stopped
-    environment:
-      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/postgres
-      RABBIT_URL: amqp://guest:guest@rabbitmq/
-      QUEUE_NAME: tasks_queue
+    env_file:
+      - .env.docker
     depends_on:
       postgres:
         condition: service_healthy
