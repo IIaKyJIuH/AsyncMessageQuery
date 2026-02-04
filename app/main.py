@@ -38,7 +38,7 @@ async def create_task(
     broker = cast(BrokerBase, request.app.state.broker)
     try:
         await broker.publish(str(task.id))
-    except Exception as exc:  # pragma: no cover - defensive
+    except Exception as exc:
         task.status = TaskStatus.FAILED
         task.result = f"Queue publish failed: {exc}"
         await session.commit()
