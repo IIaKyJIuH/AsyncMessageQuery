@@ -1,5 +1,5 @@
 [project]
-name = "bobr-task"
+name = "mq-task"
 version = "0.1.0"
 description = "Принимает задачи от пользователей и обрабатывает их асинхронно через очередь сообщений"
 readme = "README.md"

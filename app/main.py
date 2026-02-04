@@ -23,7 +23,7 @@ async def lifespan(app: FastAPI):
         yield
 
 
-app = FastAPI(title="bobr_task", lifespan=lifespan)
+app = FastAPI(title="mq_task", lifespan=lifespan)
 
 
 @app.post("/tasks", response_model=TaskCreated)
