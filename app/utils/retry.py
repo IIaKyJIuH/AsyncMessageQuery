@@ -3,10 +3,24 @@ from __future__ import annotations
 import asyncio
 import functools
 from collections.abc import Awaitable, Callable
-from typing import ParamSpec, TypeVar
+from typing import ParamSpec, TypeVar, overload
 
 _P = ParamSpec("_P")
 _T = TypeVar("_T")
+
+
+@overload
+def async_retry(
+    original_function: Callable[_P, Awaitable[_T]],
+) -> Callable[_P, Awaitable[_T]]: ...
+
+
+@overload
+def async_retry(
+    *,
+    retries: int = 10,
+    delay: float = 1.0,
+) -> Callable[[Callable[_P, Awaitable[_T]]], Callable[_P, Awaitable[_T]]]: ...
 
 
 def async_retry(
