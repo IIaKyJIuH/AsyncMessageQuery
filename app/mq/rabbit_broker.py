@@ -42,4 +42,4 @@ class RabbitBroker(BrokerBase):
         if not self.queue:
             raise RuntimeError("RabbitMQ queue is not initialized")
         await self.queue.consume(handler, no_ack=False)
-        await asyncio.Event().wait()
+        await asyncio.Future()  # Так нужно из-за aio_pika.queue.consume для воркера
