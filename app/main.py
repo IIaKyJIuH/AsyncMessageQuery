@@ -1,7 +1,9 @@
 from contextlib import asynccontextmanager
 from typing import cast
+from uuid import UUID
 
 from fastapi import Depends, FastAPI, HTTPException, Request
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.mq.broker_base import BrokerBase
@@ -10,7 +12,7 @@ from .db import get_session, init_db
 from .enums import TaskStatus
 from .models import Task
 from .mq import RabbitBroker
-from .schemas import TaskCreate, TaskCreated
+from .schemas import TaskCreate, TaskCreated, TaskRead
 
 
 @asynccontextmanager
@@ -45,3 +47,12 @@ async def create_task(
         raise HTTPException(status_code=500, detail="Failed to enqueue task") from exc
 
     return TaskCreated(id=task.id)
+
+
+@app.get("/tasks/{task_id}", response_model=TaskRead)
+async def get_task(task_id: UUID, session: AsyncSession = Depends(get_session)) -> TaskRead:
+    result = await session.execute(select(Task).where(Task.id == task_id))
+    task = result.scalar_one_or_none()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return TaskRead.model_validate(task)
