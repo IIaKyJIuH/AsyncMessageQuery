@@ -1,11 +1,10 @@
 from abc import ABC, abstractmethod
 from collections.abc import Awaitable, Callable
-from typing import Self, TypeVar
+from typing import Self
 
 from ..utils.retry import async_retry
 
-_T = TypeVar("_T")
-MessageHandler = Callable[[_T], Awaitable[None]]
+type MessageHandler[T] = Callable[[T], Awaitable[None]]
 
 
 class BrokerBase(ABC):
