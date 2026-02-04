@@ -35,12 +35,8 @@ class RabbitBroker(BrokerBase):
     async def publish(self, task_id: str) -> None:
         if not self.channel:
             raise RuntimeError("RabbitMQ channel is not initialized")
-        message = Message(
-            body=task_id.encode("utf-8"), delivery_mode=DeliveryMode.PERSISTENT
-        )
-        await self.channel.default_exchange.publish(
-            message, routing_key=self.queue_name
-        )
+        message = Message(body=task_id.encode("utf-8"), delivery_mode=DeliveryMode.PERSISTENT)
+        await self.channel.default_exchange.publish(message, routing_key=self.queue_name)
 
     async def consume(self, handler: MessageHandler) -> None:
         if not self.queue:
