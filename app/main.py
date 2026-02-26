@@ -6,6 +6,7 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.db.base import dispose_engine
 from app.mq.broker_base import BrokerBase
 
 from .db import get_session, init_db
@@ -21,6 +22,7 @@ async def lifespan(app: FastAPI):
     async with RabbitBroker() as broker:
         app.state.broker = broker
         yield
+    await dispose_engine()
 
 
 app = FastAPI(title="mq_task", lifespan=lifespan)

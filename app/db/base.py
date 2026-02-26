@@ -7,6 +7,10 @@ from ..utils.retry import async_retry
 engine = create_async_engine(settings.database_url, pool_pre_ping=True)
 
 
+async def dispose_engine() -> None:
+    await engine.dispose()
+
+
 class BaseModel(DeclarativeBase):
     pass
 

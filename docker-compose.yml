@@ -1,7 +1,7 @@
 services:
   api:
     build: .
-    container_name: bobr_task_api
+    container_name: mq_task_api
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
     restart: unless-stopped
     env_file:
@@ -26,7 +26,7 @@ services:
 
   worker:
     build: .
-    container_name: bobr_task_worker
+    container_name: mq_task_worker
     command: ["python", "-m", "app.worker"]
     restart: unless-stopped
     env_file:
@@ -39,7 +39,7 @@ services:
 
   postgres:
     image: postgres:16
-    container_name: bobr_task_postgres
+    container_name: mq_task_postgres
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: postgres
@@ -58,7 +58,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: bobr_task_rabbitmq
+    container_name: mq_task_rabbitmq
     restart: unless-stopped
     ports:
       - "5672:5672"

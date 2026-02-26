@@ -5,20 +5,22 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     UV_SYSTEM_PYTHON=1 \
     UV_LINK_MODE=copy
 
-WORKDIR /bobr_task
+WORKDIR /mq_task
 
 RUN pip install --no-cache-dir uv
 
-COPY pyproject.toml uv.lock /bobr_task/
+COPY pyproject.toml uv.lock /mq_task/
+COPY .env.docker ./mq_task/
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev --no-install-project
 
-COPY app /bobr_task/app
+ENV VIRTUAL_ENV=/mq_task/.venv
+ENV PATH="${VIRTUAL_ENV}/bin:$PATH"
+
+COPY app /mq_task/app
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
 
-ENV PATH="/bobr_task/.venv/bin:$PATH"
-
-CMD ["uvicorn", "bobr_task.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "mq_task.main:app", "--host", "0.0.0.0", "--port", "8000"]

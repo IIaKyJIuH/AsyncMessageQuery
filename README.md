@@ -1,4 +1,4 @@
-# Тестовое задание BOBR
+# Async MessageQuery
 
 Backend-сервис для асинхронной обработки задач на async-FastAPI + RabbitMQ + PostgreSQL.
 
